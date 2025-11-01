@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Dashboard Distrito Educativo 06-07</title>
+    <!-- Carga de Tailwind CSS para estilos modernos y responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de la librería Chart.js para la creación de gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <!-- Estilos personalizados para la tipografía y el diseño -->
+
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Encabezado y Título del Dashboard -->
+    <header class="mb-8">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-2">
+            Dashboard Distrito Educativo 06-07
+        </h1>
+        <p class="text-gray-600 text-lg">Visualización de datos clave de matrícula y carga por centros (Años 2023-2026)</p>
+    </header>
+
+    <!-- Sección de Indicadores Clave (KPIs) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <!-- KPI 1: Matrícula Total 2025-2026 -->
+        <div class="card bg-white p-6 rounded-xl border-l-4 border-primary">
+            <p class="text-primary kpi-value font-bold" id="kpi-matricula-actual">7,942</p>
+            <p class="kpi-label mt-2">Matrícula Proyectada 2025-2026</p>
+        </div>
+
+        <!-- KPI 2: Cambio % de Matrícula (Tendencia) -->
+        <div class="card bg-white p-6 rounded-xl border-l-4 border-red-500">
+            <p class="kpi-value font-bold text-red-600" id="kpi-cambio-porcentaje">-7.10%</p>
+            <p class="kpi-label mt-2">Cambio % (2025-2026 vs 2024-2025)</p>
+        </div>
+
+        <!-- KPI 3: Matrícula Pública Total (2025-2026) -->
+        <div class="card bg-white p-6 rounded-xl border-l-4 border-green-600">
+            <p class="kpi-value font-bold text-green-700" id="kpi-publica">7,564</p>
+            <p class="kpi-label mt-2">Matrícula Sector Público 2025-2026</p>
+        </div>
+
+        <!-- KPI 4: Centros Educativos Registrados -->
+        <!-- Usamos el archivo 'Datos Centros' para contar los centros únicos -->
+        <div class="card bg-white p-6 rounded-xl border-l-4 border-yellow-500">
+            <p class="kpi-value font-bold text-yellow-700" id="kpi-centros-count">71</p>
+            <p class="kpi-label mt-2">Centros Educativos Registrados</p>
+        </div>
+    </section>
+
+    <!-- Sección de Gráficos Principales -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- GRÁFICO 1: Matrícula Total por Año y Tendencia -->
+        <div class="lg:col-span-2 card bg-white p-6 rounded-xl">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Matrícula Total y Tendencia Anual</h2>
+            <!-- Contenedor del gráfico Chart.js -->
+            <div class="h-80 w-full">
+                <canvas id="chartTendencia"></canvas>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">Visualización de la matrícula total a lo largo de los años escolares, con enfoque en la tendencia.</p>
+        </div>
+
+        <!-- GRÁFICO 2: Distribución de Matrícula por Sector (2025-2026) -->
+        <div class="lg:col-span-1 card bg-white p-6 rounded-xl flex flex-col items-center">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Matrícula por Sector (2025-2026)</h2>
+            <div class="h-64 w-64 md:h-80 md:w-80">
+                <canvas id="chartSector"></canvas>
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">Comparación de la matrícula entre el sector público y privado.</p>
+        </div>
+
+        <!-- GRÁFICO 3: Distribución Porcentual de la Matrícula por Nivel (2025-2026) -->
+        <div class="lg:col-span-1 card bg-white p-6 rounded-xl flex flex-col items-center">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Distribución de Matrícula por Nivel (2025-2026)</h2>
+            <div class="h-64 w-64 md:h-80 md:w-80">
+                <canvas id="chartDistribucionNivel"></canvas>
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">El nivel Primario concentra la mayor parte de la matrícula.</p>
+        </div>
+
+        <!-- GRÁFICO 4: Matrícula por Nivel Educativo por Año (Comparativo) -->
+        <div class="lg:col-span-2 card bg-white p-6 rounded-xl">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Matrícula por Nivel Educativo (Comparativo Anual)</h2>
+            <div class="h-80 w-full">
+                <canvas id="chartNivelAnual"></canvas>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">Análisis de la variación de la matrícula en cada nivel educativo a través de los años.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Carga Docente (Promedio Estudiantes/Sección) -->
+    <section class="mt-10">
+        <div class="card bg-white p-6 rounded-xl">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Carga Promedio de Estudiantes por Sección</h2>
+            <p class="text-sm text-gray-500 mb-6">Promedio de estudiantes por sección, crucial para el análisis de la capacidad de los centros.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="seccion-carga-niveles">
+                <!-- Los indicadores de carga por nivel se inyectarán aquí por JS -->
+            </div>
+        </div>
+    </section>
+
+
+  <script type="text/javascript" src="./js/inicializar.js"></script>
+</body>
+</html>
